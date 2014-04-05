@@ -26,6 +26,7 @@ public class SingleMapField implements Updatable{
 	public boolean isEnd() {
 		return isEnd;
 	}
+	
 
 	public void setEnd(boolean isEnd) {
 		this.isEnd = isEnd;
@@ -81,11 +82,6 @@ public class SingleMapField implements Updatable{
 	}
 	
 	public SingleMapField(Field argField) throws ObstaclePropertyException{
-		if(argField == null){
-			isEnd = true;
-			return;
-		}
-		
 		if(argField.isGate())
 			setGate(true);
 		
@@ -97,7 +93,10 @@ public class SingleMapField implements Updatable{
 		if(equipmentInstance != null)
 			setFieldEquipment(equipmentInstance.getName());
 	}
+	
+	public SingleMapField(Field argField, boolean isEnd) throws ObstaclePropertyException{
+		this(argField);
+		setEnd(true);
+	}
 
-	
-	
 }

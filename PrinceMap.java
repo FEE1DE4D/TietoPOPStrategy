@@ -36,43 +36,70 @@ public class PrinceMap {
 		PrinceClass instance = PrinceClass.getInstance();
 		List<Field> sightList = instance.lookAround(princeInstance);
 		LinkedList<SingleMapField> mapLinkedList =  new LinkedList<SingleMapField>(mapList);
-		int position = instance.getCurrentPosition();
 		
-		if(mapLinkedList.isEmpty()){
+		/*if(mapLinkedList.isEmpty()){
 			for(Field f : sightList){
 				mapLinkedList.addLast(new SingleMapField(f));
 			}
+			instance.setCurrentPosition((sightList.size()/2));
 		}
-		else
+		else*/
 		{
 			int size = sightList.size();
 			int middle = size-instance.princeSight-1;
-			mapLinkedList.set(position, new SingleMapField(sightList.get(middle)));
+			if(!mapLinkedList.isEmpty()){
+				mapLinkedList.set(instance.getCurrentPosition(), new SingleMapField(sightList.get(middle)));
+			}
+			else{
+				mapLinkedList.addLast(new SingleMapField(sightList.get(middle)));
+			}
 			
 			for(int i = middle-1;i >= 0;i--){
 				Field newField = sightList.get(i);
+				if(newField == null)
+				{
+					mapLinkedList.get(instance.getCurrentPosition()-i).setEnd(true);
+					break;
+				}
+					
 				try{
-					mapLinkedList.set(position-i, new SingleMapField(newField));
+					int currentPosition = instance.getCurrentPosition()-i-1;
+					if(mapLinkedList.get(currentPosition).isEnd()){
+						mapLinkedList.set(currentPosition, new SingleMapField(newField,true));
+					}
+					else{
+						mapLinkedList.set(currentPosition, new SingleMapField(newField));
+					}
 				}
 				catch (IndexOutOfBoundsException e){
 					mapLinkedList.addFirst(new SingleMapField(newField));
+					instance.incCurrentPosition();
 				}
-				if(newField == null)
-					break;
 			}
 			
 			for(int i = middle+1;i < size;i++){
 				Field newField = sightList.get(i);
+				if(newField == null)
+				{
+					mapLinkedList.get(instance.getCurrentPosition()+i-2).setEnd(true);
+					break;
+				}
 				try{
-					mapLinkedList.set(position+i, new SingleMapField(newField));
+					int currentPosition = instance.getCurrentPosition()+i-1;
+					if(mapLinkedList.get(currentPosition).isEnd()){
+						mapLinkedList.set(currentPosition, new SingleMapField(newField,true));
+					}
+					else{
+						mapLinkedList.set(currentPosition, new SingleMapField(newField));
+					}
 				}
 				catch (IndexOutOfBoundsException e){
 					mapLinkedList.addLast(new SingleMapField(newField));
 				}
-				if(newField == null)
-					break;
 			}
+			
 		}
+		mapList = mapLinkedList;
 		
 	}
 	
@@ -81,5 +108,32 @@ public class PrinceMap {
 		updateSeen(princeInstance);
 	}
 
+	
+	public void drawMap(){
+		String emptyTile =  "|_|";
+		String princeTile = "|P|";
+		String gateTile =   "|G|";
+		String endTile =    "|E|";
+		
+		int counter = 0;
+		
+		PrinceClass instance = PrinceClass.getInstance();
+		for(SingleMapField smf : mapList){
+			if(instance.getCurrentPosition() == counter){
+				System.out.print(princeTile);
+			}
+			else if (smf.isEnd()) {
+				System.out.print(endTile);
+			}
+			else if (smf.isGate()) {
+				System.out.print(gateTile);
+			}
+			else{
+				System.out.print(emptyTile);
+			}
+			counter += 1;
+		}
+		System.out.println("");
+	}
 	
 }

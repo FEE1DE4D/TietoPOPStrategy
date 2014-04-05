@@ -15,6 +15,7 @@ public class PersianOffensive implements GameStrategy {
 		} catch (ObstaclePropertyException e) {
 			e.printStackTrace();
 		}
+		gameMap.drawMap();
 		return new DefaultGateRushStrategy().execute();
 	}
 

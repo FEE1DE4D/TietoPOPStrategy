@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.List;
 
 import cz.tieto.academy.prince.persianoffensive.PrinceUtil.Orientation;
+import cz.tieto.princegame.common.action.Action;
+import cz.tieto.princegame.common.action.MoveBackward;
+import cz.tieto.princegame.common.action.MoveForward;
 import cz.tieto.princegame.common.gameobject.Equipment;
 import cz.tieto.princegame.common.gameobject.Field;
 import cz.tieto.princegame.common.gameobject.Prince;
@@ -14,11 +17,11 @@ public class PrinceClass {
 	public static enum Moves{
 		MOVEFORWARD, MOVEBACKWARD, JUMPFORWARD, JUMPBACKWARD, HEAL, GRAB, USE;
 	}
+    public final int princeSight = 1;
 	
 	private static PrinceClass instance;
 	private Orientation princeOrientation;
 	private int currentPosition;
-    public final int princeSight = 1;
 
 	
 	public static PrinceClass getInstance() {
@@ -42,7 +45,6 @@ public class PrinceClass {
 	public void setPrinceOrientation(Orientation princeOrientation) {
 		this.princeOrientation = princeOrientation;
 	}
-	
 
 	public int getPrinceMaxHealth(Prince princeInstance) {
 		return princeInstance.getMaxHealth();
@@ -84,5 +86,31 @@ public class PrinceClass {
 	}
 	public void setCurrentPosition(int currentPosition) {
 		this.currentPosition = currentPosition;
+	}
+	public void incCurrentPosition() {
+		this.currentPosition += 1;
+	}
+	public void decCurrentPosition() {
+		this.currentPosition -= 1;
+	}
+	
+	public Action moveForward(){
+		incCurrentPosition();
+		return new MoveForward();
+	}
+	
+	public Action moveBackward(){
+		decCurrentPosition();
+		return new MoveBackward();
+	}
+	
+	public Action getMoveBySide(Orientation side){
+		if(side == Orientation.RIGHT){
+			return moveForward();
+		}
+		if(side == Orientation.LEFT){
+			return moveBackward();
+		}
+		throw new IllegalArgumentException("getMoveBySide accept only LEFT/RIGHT");
 	}
 }
