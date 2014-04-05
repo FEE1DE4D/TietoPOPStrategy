@@ -18,24 +18,23 @@ public class DefaultGateRushStrategy implements Executable{
 	public Action execute() {
 		Integer gatePosition = StrategyUtil.getGate(gameMap);
 		PrinceClass princeInstance = PrinceClass.getInstance();
-		
+		int pos = princeInstance.getCurrentPosition();
 		if(gatePosition != null){
 			Orientation gateWay = StrategyUtil.findPathTo(gatePosition, princeInstance.getCurrentPosition());
 			if(gateWay == null){
 				return new EnterGate();
 			}
-			else if(gateWay == Orientation.LEFT) {
-				return princeInstance.moveBackward();
+			else{
+				Orientation way = StrategyUtil.findPathTo(gatePosition,pos);
+				return princeInstance.getMoveBySide(way, StrategyUtil.getJumpOrMove(gameMap, pos, way));
 			}
-			return princeInstance.moveForward();
-			
 		}
 		else{
 			if(StrategyUtil.leftEnd(gameMap)){
-				return princeInstance.getMoveBySide(Orientation.RIGHT);
+				return princeInstance.getMoveBySide(Orientation.RIGHT,StrategyUtil.getJumpOrMove(gameMap, pos, Orientation.RIGHT));
 			}
 			if(StrategyUtil.rightEnd(gameMap)){
-				return princeInstance.getMoveBySide(Orientation.LEFT);
+				return princeInstance.getMoveBySide(Orientation.LEFT,StrategyUtil.getJumpOrMove(gameMap, pos, Orientation.LEFT));
 			}
 			Orientation activeSide = StrategyUtil.getActiveSide(gameMap, princeInstance.getCurrentPosition());
 			Orientation returnSide;
@@ -45,7 +44,7 @@ public class DefaultGateRushStrategy implements Executable{
 			else{
 				returnSide = activeSide;
 			}
-			return princeInstance.getMoveBySide(returnSide);
+			return princeInstance.getMoveBySide(returnSide, StrategyUtil.getJumpOrMove(gameMap, pos, returnSide));
 		}
 	}
 

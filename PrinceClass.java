@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import cz.tieto.academy.prince.persianoffensive.PrinceUtil.Move;
 import cz.tieto.academy.prince.persianoffensive.PrinceUtil.Orientation;
 import cz.tieto.princegame.common.action.Action;
+import cz.tieto.princegame.common.action.JumpBackward;
+import cz.tieto.princegame.common.action.JumpForward;
 import cz.tieto.princegame.common.action.MoveBackward;
 import cz.tieto.princegame.common.action.MoveForward;
 import cz.tieto.princegame.common.gameobject.Equipment;
@@ -104,13 +107,32 @@ public class PrinceClass {
 		return new MoveBackward();
 	}
 	
-	public Action getMoveBySide(Orientation side){
+	public Action jumpForward(){
+		incCurrentPosition();
+		incCurrentPosition();
+		return new JumpForward();
+	}
+	
+	public Action jumpBackward(){
+		decCurrentPosition();
+		decCurrentPosition();
+		return new JumpBackward();
+	}
+	
+	public Action getMoveBySide(Orientation side, Move move){
 		if(side == Orientation.RIGHT){
-			return moveForward();
+			if(move == Move.WALK){
+			    return moveForward();
+			}
+			return jumpForward();
 		}
 		if(side == Orientation.LEFT){
-			return moveBackward();
+			if(move == Move.WALK){
+				return moveBackward();
+			}
+			return jumpBackward();
 		}
 		throw new IllegalArgumentException("getMoveBySide accept only LEFT/RIGHT");
 	}
+	
 }

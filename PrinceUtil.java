@@ -6,6 +6,9 @@ public class PrinceUtil {
 	static public enum Orientation{
 		LEFT,RIGHT;
 	}
+	static public enum Move{
+		JUMP,WALK;
+	}
 	
 	public static String reverseStringBool(String trueFalse){
 		if(trueFalse.equals("true")){

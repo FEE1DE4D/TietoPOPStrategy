@@ -2,6 +2,7 @@ package cz.tieto.academy.prince.persianoffensive;
 
 import java.util.List;
 
+import cz.tieto.academy.prince.persianoffensive.PrinceUtil.Move;
 import cz.tieto.academy.prince.persianoffensive.PrinceUtil.Orientation;
 import cz.tieto.princegame.common.action.Action;
 import cz.tieto.princegame.common.action.MoveBackward;
@@ -58,6 +59,22 @@ public class StrategyUtil {
 			return Orientation.RIGHT;
 		}
 		return Orientation.LEFT;
+	}
+	
+	public static Move getJumpOrMove(List<SingleMapField> mapList, int pos, Orientation ori){
+		if(ori == Orientation.RIGHT){
+			if(pos+2 > (mapList.size()-1)){
+				return Move.WALK;
+			}
+			return Move.JUMP;
+		}
+		if(ori == Orientation.LEFT){
+			if(pos-2 < 0){
+				return Move.WALK;
+			}
+			return Move.JUMP;
+		}
+		throw new IllegalArgumentException("Orientation cant be null");
 	}
 	
 }

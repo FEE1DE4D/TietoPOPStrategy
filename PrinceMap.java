@@ -110,10 +110,10 @@ public class PrinceMap {
 
 	
 	public void drawMap(){
-		String emptyTile =  "|_|";
-		String princeTile = "|P|";
-		String gateTile =   "|G|";
-		String endTile =    "|E|";
+		final String emptyTile =  "|_|";
+		final String princeTile = "|P|";
+		final String gateTile =   "|G|";
+		final String endTile =    "|E|";
 		
 		int counter = 0;
 		
