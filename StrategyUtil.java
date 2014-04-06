@@ -64,14 +64,36 @@ public class StrategyUtil {
 	public static Move getJumpOrMove(List<SingleMapField> mapList, int pos, Orientation ori){
 		if(ori == Orientation.RIGHT){
 			if(pos+2 > (mapList.size()-1)){
+				/*XXX*/
+				MapFieldObstacle mfo = mapList.get(pos+1).getFieldObstacle();
+				if(mfo != null && mfo.getName().equals(ObstacleUtil.PITFALL)){
+					return Move.JUMP;
+				}
+				/*YYY*/
 				return Move.WALK;
 			}
+			/*XXX*/
+			MapFieldObstacle mfo = mapList.get(pos+2).getFieldObstacle();
+			if(mfo != null && mfo.getName().equals(ObstacleUtil.PITFALL)){
+				return Move.WALK;
+			}/*YYY*/
 			return Move.JUMP;
 		}
 		if(ori == Orientation.LEFT){
 			if(pos-2 < 0){
+				/*XXX*/
+				MapFieldObstacle mfo = mapList.get(pos-1).getFieldObstacle();
+				if(mfo != null && mfo.getName() == ObstacleUtil.PITFALL){
+					return Move.JUMP;
+				}
+				/*YYY*/
 				return Move.WALK;
 			}
+			/*XXX*/
+			MapFieldObstacle mfo = mapList.get(pos-2).getFieldObstacle();
+			if(mfo != null && mfo.getName() == ObstacleUtil.PITFALL){
+				return Move.WALK;
+			}/*YYY*/
 			return Move.JUMP;
 		}
 		throw new IllegalArgumentException("Orientation cant be null");

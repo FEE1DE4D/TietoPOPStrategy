@@ -48,7 +48,16 @@ public class PrinceMap {
 			int size = sightList.size();
 			int middle = size-instance.princeSight-1;
 			if(!mapLinkedList.isEmpty()){
-				mapLinkedList.set(instance.getCurrentPosition(), new SingleMapField(sightList.get(middle)));
+				int pos = instance.getCurrentPosition();
+				if(pos == mapLinkedList.size()){
+					mapLinkedList.addLast(new SingleMapField(sightList.get(middle)));
+				}
+				else if(pos == -1){
+					mapLinkedList.addFirst(new SingleMapField(sightList.get(middle)));
+				}
+				else{
+					mapLinkedList.set(pos, new SingleMapField(sightList.get(middle)));
+				}
 			}
 			else{
 				mapLinkedList.addLast(new SingleMapField(sightList.get(middle)));
@@ -107,6 +116,7 @@ public class PrinceMap {
 		updateUnseen();
 		updateSeen(princeInstance);
 	}
+	
 
 	
 	public void drawMap(){
@@ -114,6 +124,7 @@ public class PrinceMap {
 		final String princeTile = "|P|";
 		final String gateTile =   "|G|";
 		final String endTile =    "|E|";
+		final String obsTile =    "|O|";
 		
 		int counter = 0;
 		
@@ -127,6 +138,9 @@ public class PrinceMap {
 			}
 			else if (smf.isGate()) {
 				System.out.print(gateTile);
+			}
+			else if (smf.getFieldObstacle() != null){
+				System.out.print(obsTile);
 			}
 			else{
 				System.out.print(emptyTile);
