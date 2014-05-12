@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import obstacles.ObstacleChopper;
-import obstacles.ObstacleDragon;
-import obstacles.ObstacleKnight;
-import obstacles.ObstaclePitfall;
-import obstacles.ObstacleThornbush;
 import cz.tieto.academy.tietopopstrategy.Util.Orientation;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleChopper;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleDragon;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleKnight;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstaclePitfall;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleThornbush;
 import cz.tieto.princegame.common.action.Action;
 import cz.tieto.princegame.common.action.EnterGate;
 import cz.tieto.princegame.common.action.Grab;
