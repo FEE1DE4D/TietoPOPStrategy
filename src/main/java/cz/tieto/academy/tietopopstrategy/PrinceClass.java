@@ -12,7 +12,7 @@ import cz.tieto.princegame.common.action.MoveForward;
 import cz.tieto.princegame.common.gameobject.Equipment;
 import cz.tieto.princegame.common.gameobject.Prince;
 
-/*
+/**
  *  This class represents our hero, his position, inventory
  */
 public class PrinceClass {

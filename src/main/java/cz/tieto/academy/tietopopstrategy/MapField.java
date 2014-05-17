@@ -1,6 +1,5 @@
 package cz.tieto.academy.tietopopstrategy;
 
-import cz.tieto.princegame.common.gameobject.Equipment;
 import cz.tieto.princegame.common.gameobject.Field;
 
 /**
@@ -14,6 +13,7 @@ public class MapField {
 	private Field fieldInstance;
 	
 	public MapField(Field argField){
+		
 		isGate = argField.isGate();
 		
 		if(argField.getEquipment() != null){
@@ -27,7 +27,7 @@ public class MapField {
 		fieldInstance = argField;
 	}
 
-	public boolean isGate() {
+	public boolean isGate(){
 		return isGate;
 	}
 

@@ -1,16 +1,17 @@
 package cz.tieto.academy.tietopopstrategy;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
-
 import cz.tieto.princegame.common.action.Action;
 import cz.tieto.princegame.common.gameobject.Equipment;
 
 public class Util {
 
-	public static enum Orientation{
+	public enum Orientation{
 		FORWARD, BACKWARD;
+	}
+	
+	public enum Move{
+		MOVEFORWARD, MOVEBACKWARD, JUMPFORWARD, JUMPBACKWARD;
 	}
 	
 	public static final String PITFALL = "pitfall";
@@ -35,13 +36,31 @@ public class Util {
 		return retEquipment;
 	}
 	
-	public static Action actionBasedOnOrientation(PrinceClass princeInstance, Method ifForward, Method ifBackward) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public static Action actionBasedOnOrientation(PrinceClass princeInstance, Move ifForward, Move ifBackward){
+		
 		Orientation princeOrientation = princeInstance.getPrinceOrientation();
+		
 		if(princeOrientation == Orientation.FORWARD){
-			return (Action) ifForward.invoke(princeInstance, null);
+			return convertMoveToAction(ifForward, princeInstance);
 		}
 		else{
-		    return (Action)ifBackward.invoke(princeInstance, null);
+			return convertMoveToAction(ifBackward, princeInstance);
+		}
+	}
+	
+	public static Action convertMoveToAction(Move moveToConvert, PrinceClass princeInstance){
+		
+		switch(moveToConvert){
+		case MOVEFORWARD:
+			return princeInstance.princeMoveForward();
+		case MOVEBACKWARD:
+			return princeInstance.princeMoveBackward();
+		case JUMPFORWARD:
+			return princeInstance.princeJumpForward();
+		case JUMPBACKWARD:
+			return princeInstance.princeJumpBackward();
+		default:
+			throw new IllegalArgumentException("convertMoveToAction got unknown Move as parameter");
 		}
 	}
 }

@@ -6,8 +6,8 @@ import java.util.List;
 import cz.tieto.princegame.common.gameobject.Field;
 import cz.tieto.princegame.common.gameobject.Prince;
 
-/*
- *  Represents game map as LinkedList of MapFields
+/**
+ *  Represents game map as List of MapFields
  */
 public class MapClass {
 	
@@ -19,10 +19,11 @@ public class MapClass {
 		princeInstance = princeArg;
 	}
 	
-	/*
+	/**
 	 *  Takes Prince instance as argument and updates map by calling look() function
 	 */
 	public void updateMap(Prince argPrince){
+		
 		LinkedList<MapField> updatedGameMap = new LinkedList<>(gameMap);
 		int princePosition = princeInstance.getPrincePosition();
 		
@@ -65,9 +66,11 @@ public class MapClass {
 	}
 	
 	public List<MapField> getMap(){
+		
 		return gameMap;
 	}
-	/*
+	
+	/**
 	 *  Prints a simple ascii version of map 
 	 */
 	public void drawMap(){
@@ -95,7 +98,7 @@ public class MapClass {
 		}
 		System.out.print("|");
 	}
-	
+
 	public MapField isNullOrMapField(Field argField){
 		if(argField == null){
 			return null;	

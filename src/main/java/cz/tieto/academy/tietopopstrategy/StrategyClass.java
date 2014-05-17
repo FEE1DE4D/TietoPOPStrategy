@@ -1,12 +1,10 @@
 package cz.tieto.academy.tietopopstrategy;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
+import cz.tieto.academy.tietopopstrategy.Util.Move;
 import cz.tieto.academy.tietopopstrategy.Util.Orientation;
+import cz.tieto.academy.tietopopstrategy.obstacles.ExecutableStrategy;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleChopper;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleDragon;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleKnight;
@@ -18,13 +16,14 @@ import cz.tieto.princegame.common.action.Grab;
 import cz.tieto.princegame.common.action.Heal;
 import cz.tieto.princegame.common.gameobject.Field;
 import cz.tieto.princegame.common.gameobject.Obstacle;
-import cz.tieto.princegame.common.gameobject.Prince;
 
+/**
+ * This class encapsulate the decision making functions
+ */
 public class StrategyClass {
 	
-	public static Action getMove(List<MapField> gameMap, PrinceClass princeInstance) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public static Action getMove(List<MapField> gameMap, PrinceClass princeInstance){
 		
-		Orientation princeOrientation = princeInstance.getPrinceOrientation();
 		int princePosition = princeInstance.getPrincePosition();
 		
 		Action currentFieldAction = solveCurrentField(gameMap.get(princePosition).getFieldInstance());
@@ -36,7 +35,6 @@ public class StrategyClass {
 		Field nextNextField = getNextNextField(gameMap, princeInstance);
 		Field previousField = getPreviousField(gameMap, princeInstance);
 		Field previousPreviousField = getPreviousPreviousField(gameMap, princeInstance);
-		Class<?> c = Class.forName("cz.tieto.academy.tietopopstrategy.PrinceClass");
 		
 		if(princeInstance.getAmmountToHeal() > 0){
 			if(nextNextField != null){
@@ -45,17 +43,13 @@ public class StrategyClass {
 					if(previousField != null && previousField.getObstacle() != null){
 						String obstacleName = previousField.getObstacle().getName();
 						if(obstacleName.equals(Util.PITFALL) || (obstacleName.equals(Util.CHOPPER) && previousField.getObstacle().getProperty("opening").equals("true"))){
-							Method  ifForwardMethod = c.getDeclaredMethod ("princeJumpBackward", null);
-							Method  ifBackwardMethod = c.getDeclaredMethod ("princeJumpForward", null);
-							return Util.actionBasedOnOrientation(princeInstance, ifForwardMethod, ifBackwardMethod);
+							return Util.actionBasedOnOrientation(princeInstance, Move.JUMPBACKWARD, Move.JUMPFORWARD);
 						}
 						if(obstacleName.equals(Util.CHOPPER) && previousField.getObstacle().getProperty("opening").equals("false")){
 							return new Heal();
 						}
 					}
-					Method  ifForwardMethod = c.getDeclaredMethod ("princeMoveBackward", null);
-					Method  ifBackwardMethod = c.getDeclaredMethod ("princeMoveForward", null);
-					return Util.actionBasedOnOrientation(princeInstance, ifForwardMethod, ifBackwardMethod);
+					return Util.actionBasedOnOrientation(princeInstance, Move.MOVEBACKWARD, Move.MOVEFORWARD);
 					
 				}
 			}
@@ -82,15 +76,10 @@ public class StrategyClass {
 		if(nextNextField != null){
 			Obstacle nextNextObstacle = nextNextField.getObstacle();
 			if(nextNextObstacle == null || isObstacleDead(nextNextObstacle)){
-				Method  ifForwardMethod = c.getDeclaredMethod ("princeJumpForward", null);
-				Method  ifBackwardMethod = c.getDeclaredMethod ("princeJumpBackward", null);
-				return Util.actionBasedOnOrientation(princeInstance, ifForwardMethod, ifBackwardMethod);
+				return Util.actionBasedOnOrientation(princeInstance, Move.JUMPFORWARD, Move.JUMPBACKWARD);
 			}
 		}
-		
-		Method  ifForwardMethod = c.getDeclaredMethod ("princeMoveForward", null);
-		Method  ifBackwardMethod = c.getDeclaredMethod ("princeMoveBackward", null);
-		return Util.actionBasedOnOrientation(princeInstance, ifForwardMethod, ifBackwardMethod);
+		return Util.actionBasedOnOrientation(princeInstance, Move.MOVEFORWARD, Move.MOVEBACKWARD);
 		
 		
 	}
@@ -187,23 +176,32 @@ public class StrategyClass {
 		
 	}
 	
-	public static Action solveObstacle(Obstacle nextFieldObstacle,List<Field> fieldList, PrinceClass princeInstance, List<MapField> gameMap) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public static Action solveObstacle(Obstacle nextFieldObstacle,List<Field> fieldList, PrinceClass princeInstance, List<MapField> gameMap){
+		
 		String obstacleName = nextFieldObstacle.getName();
+		ExecutableStrategy strategy;
 		
 		switch(obstacleName){
 		case Util.CHOPPER:
-			return ObstacleChopper.executeStrategy(fieldList, princeInstance, gameMap);
+			strategy = new ObstacleChopper();
+			break;
 		case Util.PITFALL:
-			return ObstaclePitfall.executeStrategy(fieldList, princeInstance, gameMap);
+			strategy = new ObstaclePitfall();
+			break;
 		case Util.KNIGHT:
-			return ObstacleKnight.executeStrategy(fieldList, princeInstance, gameMap);
+			strategy = new ObstacleKnight();
+			break;
 		case Util.DRAGON:
-			return ObstacleDragon.executeStrategy(fieldList, princeInstance, gameMap);
+			strategy = new ObstacleDragon();
+			break;
 		case Util.THORNBUSH:
-			return ObstacleThornbush.executeStrategy(fieldList, princeInstance, gameMap);
+			strategy = new ObstacleThornbush();
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown obstacle");
 		}
+		
+		return strategy.executeStrategy(fieldList, princeInstance, gameMap);
 	}
 	
 	public static boolean isObstacleDead(Obstacle argObstacle){
@@ -217,6 +215,7 @@ public class StrategyClass {
 	}
 	
 	public static Field nullOrFieldInstance(MapField argMapField){
+		
 		if(argMapField != null){
 			return argMapField.getFieldInstance();
 		}
