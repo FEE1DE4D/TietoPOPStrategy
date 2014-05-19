@@ -9,7 +9,7 @@ import cz.tieto.princegame.common.GameStrategy;
 
 public class TestUtil {
 	
-	public Map<String,GameStrategy> buildStrategies(){
+	public static Map<String,GameStrategy> buildStrategies(){
 		
 		Map<String,GameStrategy> gameStrategies = new HashMap<>();
 		

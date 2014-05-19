@@ -39,13 +39,13 @@
         <dependency>
             <groupId>cz.tieto.princegame</groupId>
             <artifactId>PrinceGameCommon</artifactId>
-            <version>0.4</version>
+            <version>0.5</version>
         </dependency>
 
         <dependency>
             <groupId>cz.tieto.princegame</groupId>
             <artifactId>PrinceGameClient</artifactId>
-            <version>0.24</version>
+            <version>0.25</version>
         </dependency>
 
         <dependency>

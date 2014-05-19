@@ -24,6 +24,10 @@ public class Util {
 	public static final String SWORD   = "sword";
 	public static final String MATCHES = "matches";
 	public static final String THORNBUSH = "thornbush";
+	public static final String MAPLETREE = "maple-tree";
+	public static final String BIRCHTREE = "birch-tree";
+	public static final String RAVINE = "ravine";
+	public static final String PLANK = "plank";
 	
 	public static Equipment getEquipment(Collection<Equipment> princeInventory, String equipmentName){
 		Equipment retEquipment = null;

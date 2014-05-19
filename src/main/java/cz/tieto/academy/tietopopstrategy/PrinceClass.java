@@ -25,7 +25,7 @@ public class PrinceClass {
 	public PrinceClass(){
 		ammountToHeal = 0;
 		princePosition = 0;
-		princeOrientation = Orientation.FORWARD;
+		princeOrientation = Orientation.BACKWARD;
 	}
 	
 	public Orientation getPrinceOrientation(){

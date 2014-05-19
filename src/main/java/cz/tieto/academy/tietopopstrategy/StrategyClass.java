@@ -2,13 +2,17 @@ package cz.tieto.academy.tietopopstrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import cz.tieto.academy.tietopopstrategy.Util.Move;
 import cz.tieto.academy.tietopopstrategy.Util.Orientation;
 import cz.tieto.academy.tietopopstrategy.obstacles.ExecutableStrategy;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleBirchtree;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleChopper;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleDragon;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleKnight;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleMapletree;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstaclePitfall;
+import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleRavine;
 import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleThornbush;
 import cz.tieto.princegame.common.action.Action;
 import cz.tieto.princegame.common.action.EnterGate;
@@ -187,6 +191,15 @@ public class StrategyClass {
 			break;
 		case Util.THORNBUSH:
 			strategy = new ObstacleThornbush();
+			break;
+		case Util.MAPLETREE:
+			strategy = new ObstacleMapletree();
+			break;
+		case Util.BIRCHTREE:
+			strategy = new ObstacleBirchtree();
+			break;
+		case Util.RAVINE:
+			strategy = new ObstacleRavine();
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown obstacle");
