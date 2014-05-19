@@ -13,7 +13,6 @@ import cz.tieto.academy.tietopopstrategy.obstacles.ObstacleThornbush;
 import cz.tieto.princegame.common.action.Action;
 import cz.tieto.princegame.common.action.EnterGate;
 import cz.tieto.princegame.common.action.Grab;
-import cz.tieto.princegame.common.action.Heal;
 import cz.tieto.princegame.common.gameobject.Field;
 import cz.tieto.princegame.common.gameobject.Obstacle;
 
@@ -36,25 +35,22 @@ public class StrategyClass {
 		Field previousField = getPreviousField(gameMap, princeInstance);
 		Field previousPreviousField = getPreviousPreviousField(gameMap, princeInstance);
 		
+		List<Field> fieldList = new ArrayList<Field>();
+		fieldList.add(nextField);
+		fieldList.add(nextNextField);
+		fieldList.add(previousField);
+		fieldList.add(previousPreviousField);
+		
 		if(princeInstance.getAmmountToHeal() > 0){
-			if(nextNextField != null){
-				Obstacle nextNextObstacle = nextNextField.getObstacle();
-				if(nextNextObstacle != null && nextNextObstacle.getName().equals(Util.DRAGON)){
-					if(previousField != null && previousField.getObstacle() != null){
-						String obstacleName = previousField.getObstacle().getName();
-						if(obstacleName.equals(Util.PITFALL) || (obstacleName.equals(Util.CHOPPER) && previousField.getObstacle().getProperty("opening").equals("true"))){
-							return Util.actionBasedOnOrientation(princeInstance, Move.JUMPBACKWARD, Move.JUMPFORWARD);
-						}
-						if(obstacleName.equals(Util.CHOPPER) && previousField.getObstacle().getProperty("opening").equals("false")){
-							return new Heal();
-						}
-					}
-					return Util.actionBasedOnOrientation(princeInstance, Move.MOVEBACKWARD, Move.MOVEFORWARD);
-					
-				}
+			if(nextNextField == null || nextNextField.getObstacle() == null || !nextNextField.getObstacle().getName().equals(Util.DRAGON)){
+				return princeInstance.princeHeal();
 			}
-			return princeInstance.princeHeal();
+			princeInstance.switchPrinceOrientation();
+			Action returnAction = solveObstacle(previousField.getObstacle(), fieldList, princeInstance, gameMap);
+			princeInstance.switchPrinceOrientation();
+			return returnAction;
 		}
+		
 		if(nextField == null){
 			 princeInstance.switchPrinceOrientation();
 			 return getMove(gameMap, princeInstance);
@@ -63,11 +59,6 @@ public class StrategyClass {
 		Obstacle nextFieldObstacle = nextField.getObstacle();
 		if (nextFieldObstacle != null){
 			if(!isObstacleDead(nextFieldObstacle)){
-				List<Field> fieldList = new ArrayList<Field>();
-				fieldList.add(nextField);
-				fieldList.add(nextNextField);
-				fieldList.add(previousField);
-				fieldList.add(previousPreviousField);
 				return solveObstacle(nextFieldObstacle, fieldList, princeInstance, gameMap);
 			}
 		}
