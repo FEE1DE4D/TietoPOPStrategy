@@ -21,13 +21,23 @@ public class PrinceClass {
 	private Orientation princeOrientation;
 	private Prince realPrince;
 	private int ammountToHeal;
+	private boolean princeMovedFlag;
 	
 	public PrinceClass(){
+		princeMovedFlag = false;
 		ammountToHeal = 0;
 		princePosition = 0;
 		princeOrientation = Orientation.BACKWARD;
 	}
 	
+	public boolean isPrinceMovedFlag() {
+		return princeMovedFlag;
+	}
+
+	public void setPrinceMovedFlag(boolean princeMovedFlag) {
+		this.princeMovedFlag = princeMovedFlag;
+	}
+
 	public Orientation getPrinceOrientation(){
 		return princeOrientation;
 	}

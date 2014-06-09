@@ -13,6 +13,8 @@ public class MapClass {
 	
 	private List<MapField> gameMap;
 	private PrinceClass princeInstance;
+	private int forwardObstacleId;
+	private int backwardObstacleId;
 	
 	public MapClass(PrinceClass princeArg){
 		gameMap = new LinkedList<>();
@@ -62,6 +64,7 @@ public class MapClass {
 		}
 		
 		gameMap = updatedGameMap;
+		princeInstance.setPrinceMovedFlag(checkIfPrinceMoved(princeInstance));
 		
 	}
 	
@@ -73,7 +76,7 @@ public class MapClass {
 	/**
 	 *  Prints a simple ascii version of map 
 	 */
-	public void drawMap(){
+	public void drawMap(PrinceClass princeInstance){
 		int counter = 0;
 		for(MapField mf: gameMap){
 			if(mf == null){
@@ -97,6 +100,13 @@ public class MapClass {
 			counter++;
 		}
 		System.out.print("|");
+		boolean princeMoved = princeInstance.isPrinceMovedFlag();
+		if(princeMoved){
+			System.out.print(" PRINCE MOVED");
+		}
+		else{
+			System.out.print(" PRINCE DID NOT MOVE");
+		}
 	}
 
 	public MapField isNullOrMapField(Field argField){
@@ -104,5 +114,36 @@ public class MapClass {
 			return null;	
 		}
 		return new MapField(argField);
+	}
+	
+	public boolean checkIfPrinceMoved(PrinceClass princeInstance){
+		int princePosition = princeInstance.getPrincePosition();
+		int thisForward;
+		int thisBackward;
+		
+		if(princePosition != 0){
+			thisBackward = -1;
+		}
+		if(princePosition == gameMap.size() - 1){
+			thisBackward = -1;
+		}
+		//thisForward = gameMap.get(princePosition - 1).getObstacleId();
+		//thisBackward = gameMap.get(princePosition + 1).getObstacleId();
+		
+		if(thisForward == 0 && thisBackward == 0){
+			forwardObstacleId = thisForward;
+			backwardObstacleId = thisBackward;
+			return true;
+		}
+		
+		if(thisForward == forwardObstacleId && thisBackward == backwardObstacleId){
+			forwardObstacleId = thisForward;
+			backwardObstacleId = thisBackward;
+			return true;
+		}
+		
+		forwardObstacleId = thisForward;
+		backwardObstacleId = thisBackward;
+		return false;
 	}
 }

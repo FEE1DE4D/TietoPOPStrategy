@@ -29,13 +29,20 @@ public class ObstacleBirchtree implements ExecutableStrategy{
 	if(treeObstacle.getProperty("felled").equals("true")){
 		Equipment equipmentPlank = Util.getEquipment(princeInstance.getInventory(), "plank");
 		if(equipmentPlank != null){
-			return Util.actionBasedOnOrientation(princeInstance, Move.JUMPFORWARD, Move.JUMPBACKWARD);
+			if(princeInstance.isPrinceMovedFlag())
+			{
+				return Util.actionBasedOnOrientation(princeInstance, Move.JUMPFORWARD, Move.JUMPBACKWARD);
+			}
+			
+			princeInstance.switchPrinceOrientation();
+			return StrategyClass.getMove(gameMap, princeInstance);
 		}
 		Equipment equipmentSaw = Util.getEquipment(princeInstance.getInventory(), "saw");
 		if(equipmentSaw != null){
 			return new Use(equipmentSaw, nextField.getObstacle());
 		}
-		return Util.actionBasedOnOrientation(princeInstance, Move.MOVEFORWARD, Move.MOVEBACKWARD);
+		princeInstance.switchPrinceOrientation();
+		return StrategyClass.getMove(gameMap, princeInstance);
 	}
 	
 	Equipment equipmentPlank = Util.getEquipment(princeInstance.getInventory(), "plank");

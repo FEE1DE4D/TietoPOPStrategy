@@ -1,6 +1,7 @@
 package cz.tieto.academy.tietopopstrategy;
 
 import cz.tieto.princegame.common.gameobject.Field;
+import cz.tieto.princegame.common.gameobject.Obstacle;
 
 /**
  * Representation of single field of map
@@ -11,6 +12,7 @@ public class MapField {
 	private String equipmentName;
 	private String obstacleName;
 	private Field fieldInstance;
+	private int obstacleId;
 	
 	public MapField(Field argField){
 		
@@ -20,8 +22,10 @@ public class MapField {
 			equipmentName = argField.getEquipment().getName();
 		}
 		
-		if(argField.getObstacle() != null){
-			obstacleName = argField.getObstacle().getName();
+		Obstacle obstacleInstance = argField.getObstacle();
+		if(obstacleInstance != null){
+			obstacleName = obstacleInstance.getName();
+			obstacleId = obstacleInstance.getId();
 		}
 		
 		fieldInstance = argField;
@@ -55,6 +59,14 @@ public class MapField {
 	
 	public Field getFieldInstance() {
 		return fieldInstance;
+	}
+	
+	public int getObstacleId() {
+		return obstacleId;
+	}
+	
+	public void setObstacleId(int obstacleId){
+		this.obstacleId = obstacleId;
 	}
 	
 	

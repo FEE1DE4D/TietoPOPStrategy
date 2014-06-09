@@ -14,7 +14,7 @@ public class Main implements GameStrategy {
 	public Action step(Prince argPrince) {
 		princeInstance.setRealPrinc(argPrince);
 		gameMap.updateMap(argPrince);
-		gameMap.drawMap();
+		gameMap.drawMap(princeInstance);
 		return StrategyClass.getMove(gameMap.getMap(), princeInstance);
 	}
 }
